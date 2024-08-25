@@ -1,5 +1,9 @@
+import { StudentAlreadyExistsError } from '@/domain/forum/application/use-cases/erros/student-already-exists-error';
+import { Public } from '@/infra/auth/public';
 import {
+  BadRequestException,
   Body,
+  ConflictException,
   Controller,
   Post,
   UsePipes
@@ -17,6 +21,7 @@ const createAccountSchema = z.object({
 type CreateAccountBodySchema = z.infer<typeof createAccountSchema>
 
 @Controller('/accounts')
+@Public()
 export class CreateAccountController {
   constructor(private readonly registerStudentUseCase: RegisterStudentUseCase) { }
 
@@ -33,7 +38,14 @@ export class CreateAccountController {
     })
 
     if (result.isLeft()) {
-      throw new Error(result.value.message)
+      const error = result.value
+
+      switch (error.constructor) {
+        case StudentAlreadyExistsError:
+          throw new ConflictException(error.message)
+        default:
+          throw new BadRequestException(error.message)
+      }
     }
 
   }

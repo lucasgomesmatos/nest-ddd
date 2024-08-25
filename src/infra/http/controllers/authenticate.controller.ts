@@ -1,6 +1,9 @@
 import { AuthenticateStudentUseCase } from '@/domain/forum/application/use-cases/authenticate-student-use-case';
+import { WrongCredentialsError } from '@/domain/forum/application/use-cases/erros/wrong-credentials-error';
+import { Public } from '@/infra/auth/public';
 import { ZodValidationPipe } from '@/infra/http/pipes/zod-validation-pipe';
 import {
+  BadRequestException,
   Body,
   Controller,
   HttpCode,
@@ -18,6 +21,7 @@ const authenticateBodySchema = z.object({
 type AuthenticateBodySchema = z.infer<typeof authenticateBodySchema>
 
 @Controller('/sessions')
+@Public()
 export class AuthenticateController {
   constructor(
     private readonly authenticateStudentUseCase: AuthenticateStudentUseCase,
@@ -35,7 +39,14 @@ export class AuthenticateController {
     })
 
     if (result.isLeft()) {
-      throw new UnauthorizedException('Invalid credentials')
+      const error = result.value
+
+      switch (error.constructor) {
+        case WrongCredentialsError:
+          throw new UnauthorizedException(error.message)
+        default:
+          throw new BadRequestException(error.message)
+      }
     }
 
     const { accessToken } = result.value
