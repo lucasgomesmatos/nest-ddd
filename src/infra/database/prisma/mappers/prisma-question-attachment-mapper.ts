@@ -16,6 +16,5 @@ export class PrismaQuestionAttachmentMapper {
       questionId: new UniqueEntityId(raw.questionId),
     }, new UniqueEntityId(raw.id))
   }
-
  
 }
