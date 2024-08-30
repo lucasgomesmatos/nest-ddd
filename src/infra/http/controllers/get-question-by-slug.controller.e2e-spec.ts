@@ -1,4 +1,3 @@
-import { PrismaService } from '@/infra/database/prisma/prisma.service'
 
 import { Slug } from '@/domain/forum/enterprise/entities/value-objects/slug'
 import { DatabaseModule } from '@/infra/database/database.module'
@@ -12,7 +11,6 @@ import { AppModule } from '../../app.module'
 
 describe('Get question by slug Controller (E2E)', () => {
   let app: INestApplication
-  let prisma: PrismaService
   let studentFactory: StudentFactory
   let questionFactory: QuestionFactory
   let jwt: JwtService
@@ -24,7 +22,6 @@ describe('Get question by slug Controller (E2E)', () => {
     }).compile()
 
     app = moduleRef.createNestApplication()
-    prisma = moduleRef.get<PrismaService>(PrismaService)
     studentFactory = moduleRef.get<StudentFactory>(StudentFactory)
     questionFactory = moduleRef.get<QuestionFactory>(QuestionFactory)
     jwt = moduleRef.get<JwtService>(JwtService)
