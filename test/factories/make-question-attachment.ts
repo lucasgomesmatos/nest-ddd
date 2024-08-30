@@ -16,7 +16,6 @@ export function makeQuestionAttachment(
     },
     id,
   )
-
   return questionAttachment
 }
 
