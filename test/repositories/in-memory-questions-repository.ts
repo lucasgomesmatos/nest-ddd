@@ -1,6 +1,6 @@
 import { PaginationParams } from '@/core//repositories/pagination-params'
 import { DomainEvents } from '@/core/events/domain-events'
-import { QuestionAttachmentRepository } from '@/domain/forum/application/repositories/question-attachments-repository'
+import { QuestionAttachmentsRepository } from '@/domain/forum/application/repositories/question-attachments-repository'
 
 import { QuestionsRepository } from '@/domain/forum/application/repositories/questions-repository'
 import { Question } from '@/domain/forum/enterprise/entities/question'
@@ -9,8 +9,8 @@ export class InMemoryQuestionsRepository implements QuestionsRepository {
   public items: Question[] = []
 
   public constructor(
-    private questionAttachmentsRepository: QuestionAttachmentRepository,
-  ) {}
+    private questionAttachmentsRepository: QuestionAttachmentsRepository,
+  ) { }
 
   async findById(id: string) {
     const question = this.items.find(
