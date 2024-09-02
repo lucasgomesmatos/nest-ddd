@@ -19,7 +19,7 @@ describe('Create Answer', () => {
 
   it('create be able to create an answer', async () => {
     const result = await sut.execute({
-      instructorId: 'instructor-id',
+      authorId: 'instructor-id',
       questionId: 'question-id',
       content: 'Answer content',
       attachmentsIds: ['attachment-1', 'attachment-2'],
