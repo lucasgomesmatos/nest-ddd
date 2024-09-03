@@ -2,6 +2,7 @@ import { Either, left, right } from '@/core//either/either';
 import { UniqueEntityId } from '@/core//entities/unique-entityId';
 import { NotAllowedError } from '@/core/errors/erros/not-allowed-error';
 import { ResourceNotFoundError } from '@/core/errors/erros/resource-not-found-error';
+import { Injectable } from '@nestjs/common';
 import { Answer } from '../../enterprise/entities/answer';
 import { AnswerAttachment } from '../../enterprise/entities/answer-attachment';
 import { AnswerAttachmentList } from '../../enterprise/entities/answer-attachment-list';
@@ -20,11 +21,12 @@ type EditAnswerUseCaseResponse = Either<
   { answer: Answer }
 >;
 
+@Injectable()
 export class EditAnswerUseCase {
   constructor(
     private answerRepository: AnswersRepository,
     private answerAttachmentRepository: AnswerAttachmentsRepository,
-  ) {}
+  ) { }
 
   async execute({
     authorId,
