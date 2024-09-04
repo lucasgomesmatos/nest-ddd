@@ -10,11 +10,13 @@ import { Module } from '@nestjs/common'
 import { CryptographyModule } from '../cryptography/cryptography.module'
 import { DatabaseModule } from '../database/database.module'
 
+import { DeleteAnswerUseCase } from '@/domain/forum/application/use-cases/delete-answer-use-case'
 import { EditAnswerUseCase } from '@/domain/forum/application/use-cases/edit-answer-use-case'
 import { AnswerQuestionsController } from './controllers/answer-question.controller'
 import { AuthenticateController } from './controllers/authenticate.controller'
 import { CreateAccountController } from './controllers/create-account.controller'
 import { CreateQuestionsController } from './controllers/create-question.controller'
+import { DeleteAnswersController } from './controllers/delete-answer.controller'
 import { DeleteQuestionsController } from './controllers/delete-question.controller'
 import { EditAnswersController } from './controllers/edit-answer.controller'
 import { EditQuestionsController } from './controllers/edit-question.controller'
@@ -32,7 +34,8 @@ import { GetQuestionBySlugController } from './controllers/get-question-by-slug.
     EditQuestionsController,
     DeleteQuestionsController,
     AnswerQuestionsController,
-    EditAnswersController
+    EditAnswersController,
+    DeleteAnswersController
   ],
   providers: [
     CreateQuestionUseCase,
@@ -43,7 +46,8 @@ import { GetQuestionBySlugController } from './controllers/get-question-by-slug.
     EditQuestionUseCase,
     DeleteQuestionUseCase,
     AnswerQuestionUseCase,
-    EditAnswerUseCase
+    EditAnswerUseCase,
+    DeleteAnswerUseCase
   ],
 
 })
