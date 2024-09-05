@@ -1,9 +1,15 @@
-import { AnswerQuestionUseCase } from '@/domain/forum/application/use-cases/answer-question-use-case';
-import { CurrentUser } from '@/infra/auth/current-user.decorator';
-import { UserPayload } from '@/infra/auth/jwt.strategy';
-import { ZodValidationPipe } from '@/infra/http/pipes/zod-validation-pipe';
-import { BadRequestException, Body, Controller, Param, Post } from '@nestjs/common';
-import { z } from 'zod';
+import { AnswerQuestionUseCase } from '@/domain/forum/application/use-cases/answer-question-use-case'
+import { CurrentUser } from '@/infra/auth/current-user.decorator'
+import { UserPayload } from '@/infra/auth/jwt.strategy'
+import { ZodValidationPipe } from '@/infra/http/pipes/zod-validation-pipe'
+import {
+  BadRequestException,
+  Body,
+  Controller,
+  Param,
+  Post,
+} from '@nestjs/common'
+import { z } from 'zod'
 
 const answerQuestionBodySchema = z.object({
   content: z.string(),
@@ -37,6 +43,4 @@ export class AnswerQuestionsController {
       throw new BadRequestException()
     }
   }
-
-
 }

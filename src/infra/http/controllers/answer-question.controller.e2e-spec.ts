@@ -52,7 +52,7 @@ describe('Create answer question Controller (E2E)', () => {
     const answerOnDatabase = await prisma.answer.findFirst({
       where: {
         content: 'New Answer',
-        questionId: questionId,
+        questionId,
       },
     })
     expect(answerOnDatabase).toBeTruthy()
