@@ -21,7 +21,7 @@ const bodyValidationPipe = new ZodValidationPipe(answerQuestionBodySchema)
 
 @Controller('/questions/:questionId/answers')
 export class AnswerQuestionsController {
-  constructor(private readonly answerQuestionUseCase: AnswerQuestionUseCase) { }
+  constructor(private readonly answerQuestionUseCase: AnswerQuestionUseCase) {}
 
   @Post()
   async handle(

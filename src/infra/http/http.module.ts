@@ -10,11 +10,13 @@ import { Module } from '@nestjs/common'
 import { CryptographyModule } from '../cryptography/cryptography.module'
 import { DatabaseModule } from '../database/database.module'
 
+import { ChooseQuestionBestAnswerUseCase } from '@/domain/forum/application/use-cases/choose-question-best-answer-use-case'
 import { DeleteAnswerUseCase } from '@/domain/forum/application/use-cases/delete-answer-use-case'
 import { EditAnswerUseCase } from '@/domain/forum/application/use-cases/edit-answer-use-case'
 import { FetchQuestionAnswersUseCase } from '@/domain/forum/application/use-cases/fetch-question-answers-use-case'
 import { AnswerQuestionsController } from './controllers/answer-question.controller'
 import { AuthenticateController } from './controllers/authenticate.controller'
+import { ChooseQuestionBestAnswerController } from './controllers/choose-question-best-answer.controller'
 import { CreateAccountController } from './controllers/create-account.controller'
 import { CreateQuestionsController } from './controllers/create-question.controller'
 import { DeleteAnswersController } from './controllers/delete-answer.controller'
@@ -39,6 +41,7 @@ import { GetQuestionBySlugController } from './controllers/get-question-by-slug.
     EditAnswersController,
     DeleteAnswersController,
     FetchQuestionAnswersController,
+    ChooseQuestionBestAnswerController,
   ],
   providers: [
     CreateQuestionUseCase,
@@ -52,6 +55,7 @@ import { GetQuestionBySlugController } from './controllers/get-question-by-slug.
     EditAnswerUseCase,
     DeleteAnswerUseCase,
     FetchQuestionAnswersUseCase,
+    ChooseQuestionBestAnswerUseCase,
   ],
 })
 export class HttpModule {}

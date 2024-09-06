@@ -1,7 +1,7 @@
-import { AuthenticateStudentUseCase } from '@/domain/forum/application/use-cases/authenticate-student-use-case';
-import { WrongCredentialsError } from '@/domain/forum/application/use-cases/erros/wrong-credentials-error';
-import { Public } from '@/infra/auth/public';
-import { ZodValidationPipe } from '@/infra/http/pipes/zod-validation-pipe';
+import { AuthenticateStudentUseCase } from '@/domain/forum/application/use-cases/authenticate-student-use-case'
+import { WrongCredentialsError } from '@/domain/forum/application/use-cases/erros/wrong-credentials-error'
+import { Public } from '@/infra/auth/public'
+import { ZodValidationPipe } from '@/infra/http/pipes/zod-validation-pipe'
 import {
   BadRequestException,
   Body,
@@ -10,8 +10,8 @@ import {
   Post,
   UnauthorizedException,
   UsePipes,
-} from '@nestjs/common';
-import { z } from 'zod';
+} from '@nestjs/common'
+import { z } from 'zod'
 
 const authenticateBodySchema = z.object({
   email: z.string().email(),
@@ -25,7 +25,7 @@ type AuthenticateBodySchema = z.infer<typeof authenticateBodySchema>
 export class AuthenticateController {
   constructor(
     private readonly authenticateStudentUseCase: AuthenticateStudentUseCase,
-  ) { }
+  ) {}
 
   @Post()
   @HttpCode(200)

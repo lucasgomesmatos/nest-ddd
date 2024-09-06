@@ -7,14 +7,16 @@ import { PrismaAnswerCommentMapper } from '../mappers/prisma-answer-comment-mapp
 import { PrismaService } from '../prisma.service'
 
 @Injectable()
-export class PrismaAnswerCommentsRepository implements AnswerCommentsRepository {
-  constructor(private readonly prisma: PrismaService) { }
+export class PrismaAnswerCommentsRepository
+  implements AnswerCommentsRepository
+{
+  constructor(private readonly prisma: PrismaService) {}
 
   async findById(id: string): Promise<AnswerComment | null> {
     const answerComment = await this.prisma.comment.findUnique({
       where: {
-        id
-      }
+        id,
+      },
     })
 
     if (!answerComment) return null
@@ -27,9 +29,9 @@ export class PrismaAnswerCommentsRepository implements AnswerCommentsRepository 
 
     await this.prisma.comment.update({
       where: {
-        id: data.id
+        id: data.id,
       },
-      data
+      data,
     })
   }
 
@@ -37,28 +39,31 @@ export class PrismaAnswerCommentsRepository implements AnswerCommentsRepository 
     const data = PrismaAnswerCommentMapper.toPersistence(answerComment)
 
     await this.prisma.comment.create({
-      data
+      data,
     })
   }
 
   async delete(answerComment: AnswerComment): Promise<void> {
     await this.prisma.comment.delete({
       where: {
-        id: answerComment.id.toString()
-      }
+        id: answerComment.id.toString(),
+      },
     })
   }
 
-  async findManyByAnswerId(answerId: string, { page }: PaginationParams): Promise<AnswerComment[]> {
+  async findManyByAnswerId(
+    answerId: string,
+    { page }: PaginationParams,
+  ): Promise<AnswerComment[]> {
     const answerComments = await this.prisma.comment.findMany({
       where: {
-        answerId
+        answerId,
       },
       take: 20,
       skip: (page - 1) * 20,
       orderBy: {
-        createdAt: 'desc'
-      }
+        createdAt: 'desc',
+      },
     })
 
     return answerComments.map(PrismaAnswerCommentMapper.toDomain)

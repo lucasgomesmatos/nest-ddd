@@ -32,8 +32,6 @@ describe('Create question Controller (E2E)', () => {
 
     const accessToken = jwt.sign({ sub: user.id.toValue() })
 
-
-
     const response = await request(app.getHttpServer())
       .post('/questions')
       .set('Authorization', `Bearer ${accessToken}`)

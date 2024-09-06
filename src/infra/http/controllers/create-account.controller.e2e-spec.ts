@@ -8,7 +8,6 @@ describe('Create Account Controller (E2E)', () => {
   let app: INestApplication
   let prisma: PrismaService
 
-
   beforeAll(async () => {
     const moduleRef = await Test.createTestingModule({
       imports: [AppModule],

@@ -9,7 +9,7 @@ import { QuestionFactory } from 'test/factories/make-question'
 import { StudentFactory } from 'test/factories/make-student'
 import { AppModule } from '../../app.module'
 
-describe('Delete answer Controller (E2E)', () => {
+describe('Choose question best answer Controller (E2E)', () => {
   let app: INestApplication
   let studentFactory: StudentFactory
   let questionFactory: QuestionFactory
@@ -32,7 +32,7 @@ describe('Delete answer Controller (E2E)', () => {
     await app.init()
   })
 
-  test('[DELETE] /answers/:id', async () => {
+  test('[PATCH] /answers/:answerId/choose-as-best', async () => {
     const user = await studentFactory.makePrismaStudent()
 
     const accessToken = jwt.sign({ sub: user.id.toValue() })
@@ -42,26 +42,28 @@ describe('Delete answer Controller (E2E)', () => {
     })
 
     const answer = await answerFactory.makePrismaAnswer({
-      questionId: question.id,
       authorId: user.id,
+      questionId: question.id,
     })
 
-    const questionId = question.id.toValue()
-    const answerId = answer.id.toValue()
+    const answerId = answer.id.toString()
 
     const response = await request(app.getHttpServer())
-      .delete(`/answers/${answerId}`)
+      .patch(`/answers/${answerId}/choose-as-best`)
       .set('Authorization', `Bearer ${accessToken}`)
-      .send()
+      .send({
+        title: 'New title',
+        content: 'New content',
+      })
 
     expect(response.status).toBe(204)
 
-    const answerOnDatabase = await prisma.answer.findFirst({
+    const questionOnDatabase = await prisma.question.findFirst({
       where: {
-        id: answerId,
-        questionId,
+        id: question.id.toValue(),
       },
     })
-    expect(answerOnDatabase).toBeFalsy()
+
+    expect(questionOnDatabase?.bestAnswerId).toEqual(answerId)
   })
 })

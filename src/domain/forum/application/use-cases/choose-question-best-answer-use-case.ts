@@ -1,6 +1,7 @@
 import { Either, left, right } from '@/core//either/either'
 import { NotAllowedError } from '@/core/errors/erros/not-allowed-error'
 import { ResourceNotFoundError } from '@/core/errors/erros/resource-not-found-error'
+import { Injectable } from '@nestjs/common'
 import { Question } from '../../enterprise/entities/question'
 import { AnswersRepository } from '../repositories/answers-repository'
 import { QuestionsRepository } from '../repositories/questions-repository'
@@ -15,6 +16,7 @@ type ChooseQuestionBestAnswerUseCaseResponse = Either<
   { question: Question }
 >
 
+@Injectable()
 export class ChooseQuestionBestAnswerUseCase {
   constructor(
     private questionRepository: QuestionsRepository,

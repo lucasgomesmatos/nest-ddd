@@ -62,7 +62,7 @@ describe('Edit answer Controller (E2E)', () => {
       where: {
         id: answerId,
         content: 'Updated Answer',
-        questionId: questionId,
+        questionId,
       },
     })
     expect(answerOnDatabase).toBeTruthy()

@@ -1,9 +1,16 @@
-import { EditAnswerUseCase } from '@/domain/forum/application/use-cases/edit-answer-use-case';
-import { CurrentUser } from '@/infra/auth/current-user.decorator';
-import { UserPayload } from '@/infra/auth/jwt.strategy';
-import { ZodValidationPipe } from '@/infra/http/pipes/zod-validation-pipe';
-import { BadRequestException, Body, Controller, HttpCode, Param, Put } from '@nestjs/common';
-import { z } from 'zod';
+import { EditAnswerUseCase } from '@/domain/forum/application/use-cases/edit-answer-use-case'
+import { CurrentUser } from '@/infra/auth/current-user.decorator'
+import { UserPayload } from '@/infra/auth/jwt.strategy'
+import { ZodValidationPipe } from '@/infra/http/pipes/zod-validation-pipe'
+import {
+  BadRequestException,
+  Body,
+  Controller,
+  HttpCode,
+  Param,
+  Put,
+} from '@nestjs/common'
+import { z } from 'zod'
 
 const editAnswerBodySchema = z.object({
   content: z.string(),
@@ -15,7 +22,7 @@ const bodyValidationPipe = new ZodValidationPipe(editAnswerBodySchema)
 
 @Controller('/answers/:id')
 export class EditAnswersController {
-  constructor(private readonly editAnswerUseCase: EditAnswerUseCase) { }
+  constructor(private readonly editAnswerUseCase: EditAnswerUseCase) {}
 
   @Put()
   @HttpCode(204)

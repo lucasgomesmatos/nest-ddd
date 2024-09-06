@@ -16,7 +16,7 @@ type DeleteQuestionUseCaseResponse = Either<
 
 @Injectable()
 export class DeleteQuestionUseCase {
-  constructor(private questionRepository: QuestionsRepository) { }
+  constructor(private questionRepository: QuestionsRepository) {}
 
   async execute({
     authorId,

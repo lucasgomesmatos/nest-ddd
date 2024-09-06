@@ -14,7 +14,7 @@ type DeleteCommentAnswerUseCaseResponse = Either<
 >
 
 export class DeleteCommentAnswerUseCase {
-  constructor(private answerCommentsRepository: AnswerCommentsRepository) { }
+  constructor(private answerCommentsRepository: AnswerCommentsRepository) {}
 
   async execute({
     authorId,

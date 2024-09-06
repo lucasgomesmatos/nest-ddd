@@ -10,9 +10,12 @@ interface AuthenticateStudentUseCaseRequest {
   password: string
 }
 
-type AuthenticateStudentUseCaseResponse = Either<WrongCredentialsError, {
-  accessToken: string
-}>
+type AuthenticateStudentUseCaseResponse = Either<
+  WrongCredentialsError,
+  {
+    accessToken: string
+  }
+>
 
 @Injectable()
 export class AuthenticateStudentUseCase {
@@ -20,7 +23,7 @@ export class AuthenticateStudentUseCase {
     private studentsRepository: StudentsRepository,
     private hashCompare: HashCompare,
     private encrypter: Encrypter,
-  ) { }
+  ) {}
 
   async execute({
     email,
@@ -32,7 +35,10 @@ export class AuthenticateStudentUseCase {
       return left(new WrongCredentialsError())
     }
 
-    const isPasswordValid = await this.hashCompare.compare(password, student.password)
+    const isPasswordValid = await this.hashCompare.compare(
+      password,
+      student.password,
+    )
 
     if (!isPasswordValid) {
       return left(new WrongCredentialsError())

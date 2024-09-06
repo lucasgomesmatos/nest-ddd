@@ -11,23 +11,27 @@ interface RegisterStudentUseCaseRequest {
   password: string
 }
 
-type RegisterStudentUseCaseResponse = Either<StudentAlreadyExistsError, {
-  student: Student
-}>
+type RegisterStudentUseCaseResponse = Either<
+  StudentAlreadyExistsError,
+  {
+    student: Student
+  }
+>
 
 @Injectable()
 export class RegisterStudentUseCase {
   constructor(
     private studentsRepository: StudentsRepository,
     private hashGenerator: HashGenerator,
-  ) { }
+  ) {}
 
   async execute({
     name,
     email,
     password,
   }: RegisterStudentUseCaseRequest): Promise<RegisterStudentUseCaseResponse> {
-    const studentWithSameEmail = await this.studentsRepository.findByEmail(email)
+    const studentWithSameEmail =
+      await this.studentsRepository.findByEmail(email)
 
     if (studentWithSameEmail) {
       return left(new StudentAlreadyExistsError(email))

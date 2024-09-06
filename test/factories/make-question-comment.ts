@@ -25,12 +25,13 @@ export function makeQuestionComment(
   return questionComment
 }
 
-
 @Injectable()
 export class QuestionCommentFactory {
-  constructor(private prisma: PrismaService) { }
+  constructor(private prisma: PrismaService) {}
 
-  async makePrismaAnswer(data: Partial<QuestionCommentProps> = {}): Promise<QuestionComment> {
+  async makePrismaAnswer(
+    data: Partial<QuestionCommentProps> = {},
+  ): Promise<QuestionComment> {
     const answer = makeQuestionComment(data)
 
     await this.prisma.comment.create({
