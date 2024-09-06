@@ -29,15 +29,15 @@ export function makeQuestionComment(
 export class QuestionCommentFactory {
   constructor(private prisma: PrismaService) {}
 
-  async makePrismaAnswer(
+  async makePrismaQuestionComment(
     data: Partial<QuestionCommentProps> = {},
   ): Promise<QuestionComment> {
-    const answer = makeQuestionComment(data)
+    const questionComment = makeQuestionComment(data)
 
     await this.prisma.comment.create({
-      data: PrismaQuestionCommentMapper.toPersistence(answer),
+      data: PrismaQuestionCommentMapper.toPersistence(questionComment),
     })
 
-    return answer
+    return questionComment
   }
 }

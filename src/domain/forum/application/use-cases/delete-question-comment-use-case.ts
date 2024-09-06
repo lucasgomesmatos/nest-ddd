@@ -1,25 +1,27 @@
 import { Either, left, right } from '@/core//either/either'
 import { NotAllowedError } from '@/core/errors/erros/not-allowed-error'
 import { ResourceNotFoundError } from '@/core/errors/erros/resource-not-found-error'
+import { Injectable } from '@nestjs/common'
 import { QuestionCommentsRepository } from '../repositories/question-comments-repository'
 
-interface DeleteCommentQuestionUseCaseRequest {
+interface DeleteQuestionCommentUseCaseRequest {
   authorId: string
   questionCommentId: string
 }
 
-type DeleteCommentQuestionUseCaseResponse = Either<
+type DeleteQuestionCommentUseCaseResponse = Either<
   NotAllowedError | ResourceNotFoundError,
   null
 >
 
-export class DeleteCommentQuestionUseCase {
+@Injectable()
+export class DeleteQuestionCommentUseCase {
   constructor(private questionCommentsRepository: QuestionCommentsRepository) {}
 
   async execute({
     authorId,
     questionCommentId: questionId,
-  }: DeleteCommentQuestionUseCaseRequest): Promise<DeleteCommentQuestionUseCaseResponse> {
+  }: DeleteQuestionCommentUseCaseRequest): Promise<DeleteQuestionCommentUseCaseResponse> {
     const questionComment =
       await this.questionCommentsRepository.findById(questionId)
 
