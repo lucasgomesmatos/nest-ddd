@@ -18,6 +18,7 @@ import { DeleteAnswerUseCase } from '@/domain/forum/application/use-cases/delete
 import { DeleteQuestionCommentUseCase } from '@/domain/forum/application/use-cases/delete-question-comment-use-case'
 import { EditAnswerUseCase } from '@/domain/forum/application/use-cases/edit-answer-use-case'
 import { FetchQuestionAnswersUseCase } from '@/domain/forum/application/use-cases/fetch-question-answers-use-case'
+import { FetchQuestionCommentsUseCase } from '@/domain/forum/application/use-cases/fetch-question-comments-use-case'
 import { AnswerQuestionsController } from './controllers/answer-question.controller'
 import { AuthenticateController } from './controllers/authenticate.controller'
 import { ChooseQuestionBestAnswerController } from './controllers/choose-question-best-answer.controller'
@@ -32,6 +33,7 @@ import { DeleteQuestionsController } from './controllers/delete-question.control
 import { EditAnswersController } from './controllers/edit-answer.controller'
 import { EditQuestionsController } from './controllers/edit-question.controller'
 import { FetchQuestionAnswersController } from './controllers/fetch-question-answers.controller'
+import { FetchQuestionCommentsController } from './controllers/fetch-question-comments.controllers'
 import { FetchRecentQuestionsController } from './controllers/fetch-recent-questions.controller'
 import { GetQuestionBySlugController } from './controllers/get-question-by-slug.controller'
 
@@ -54,6 +56,7 @@ import { GetQuestionBySlugController } from './controllers/get-question-by-slug.
     DeleteQuestionCommentController,
     CommentOnAnswerController,
     DeleteAnswerCommentController,
+    FetchQuestionCommentsController,
   ],
   providers: [
     CreateQuestionUseCase,
@@ -72,6 +75,7 @@ import { GetQuestionBySlugController } from './controllers/get-question-by-slug.
     DeleteQuestionCommentUseCase,
     CommentOnAnswerUseCase,
     DeleteAnswerCommentUseCase,
+    FetchQuestionCommentsUseCase,
   ],
 })
 export class HttpModule {}
