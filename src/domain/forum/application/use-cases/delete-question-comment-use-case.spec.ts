@@ -3,16 +3,16 @@ import { NotAllowedError } from '@/core/errors/erros/not-allowed-error'
 import { ResourceNotFoundError } from '@/core/errors/erros/resource-not-found-error'
 import { makeQuestionComment } from 'test/factories/make-question-comment'
 import { InMemoryQuestionCommentsRepository } from 'test/repositories/in-memory-question-comments-repository'
-import { DeleteCommentQuestionUseCase } from './delete-question-comment-use-case'
+import { DeleteQuestionCommentUseCase } from './delete-question-comment-use-case'
 
 let inMemoryQuestionCommentsRepository: InMemoryQuestionCommentsRepository
-let sut: DeleteCommentQuestionUseCase
+let sut: DeleteQuestionCommentUseCase
 
 describe('Delete Question Comment', () => {
   beforeEach(() => {
     inMemoryQuestionCommentsRepository =
       new InMemoryQuestionCommentsRepository()
-    sut = new DeleteCommentQuestionUseCase(inMemoryQuestionCommentsRepository)
+    sut = new DeleteQuestionCommentUseCase(inMemoryQuestionCommentsRepository)
   })
 
   it('delete be able to question comment', async () => {
