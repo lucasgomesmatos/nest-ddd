@@ -17,6 +17,7 @@ import { DeleteAnswerCommentUseCase } from '@/domain/forum/application/use-cases
 import { DeleteAnswerUseCase } from '@/domain/forum/application/use-cases/delete-answer-use-case'
 import { DeleteQuestionCommentUseCase } from '@/domain/forum/application/use-cases/delete-question-comment-use-case'
 import { EditAnswerUseCase } from '@/domain/forum/application/use-cases/edit-answer-use-case'
+import { FetchAnswerCommentsUseCase } from '@/domain/forum/application/use-cases/fetch-answer-comments-use-case'
 import { FetchQuestionAnswersUseCase } from '@/domain/forum/application/use-cases/fetch-question-answers-use-case'
 import { FetchQuestionCommentsUseCase } from '@/domain/forum/application/use-cases/fetch-question-comments-use-case'
 import { AnswerQuestionsController } from './controllers/answer-question.controller'
@@ -32,6 +33,7 @@ import { DeleteQuestionCommentController } from './controllers/delete-question-c
 import { DeleteQuestionsController } from './controllers/delete-question.controller'
 import { EditAnswersController } from './controllers/edit-answer.controller'
 import { EditQuestionsController } from './controllers/edit-question.controller'
+import { FetchAnswerCommentsController } from './controllers/fetch-answer-comments.controllers'
 import { FetchQuestionAnswersController } from './controllers/fetch-question-answers.controller'
 import { FetchQuestionCommentsController } from './controllers/fetch-question-comments.controllers'
 import { FetchRecentQuestionsController } from './controllers/fetch-recent-questions.controller'
@@ -57,6 +59,7 @@ import { GetQuestionBySlugController } from './controllers/get-question-by-slug.
     CommentOnAnswerController,
     DeleteAnswerCommentController,
     FetchQuestionCommentsController,
+    FetchAnswerCommentsController,
   ],
   providers: [
     CreateQuestionUseCase,
@@ -76,6 +79,7 @@ import { GetQuestionBySlugController } from './controllers/get-question-by-slug.
     CommentOnAnswerUseCase,
     DeleteAnswerCommentUseCase,
     FetchQuestionCommentsUseCase,
+    FetchAnswerCommentsUseCase,
   ],
 })
 export class HttpModule {}
