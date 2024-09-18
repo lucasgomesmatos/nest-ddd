@@ -52,5 +52,13 @@ describe('Create Question', () => {
 
     expect(result.isRight()).toBeTruthy()
     expect(inMemoryQuestionAttachmentRepository.items).toHaveLength(2)
+    expect(inMemoryQuestionAttachmentRepository.items).toEqual([
+      expect.objectContaining({
+        attachmentId: new UniqueEntityId('attachment-1'),
+      }),
+      expect.objectContaining({
+        attachmentId: new UniqueEntityId('attachment-2'),
+      }),
+    ])
   })
 })
