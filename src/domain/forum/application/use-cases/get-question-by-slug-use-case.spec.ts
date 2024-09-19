@@ -1,18 +1,18 @@
 import { makeQuestion } from 'test/factories/make-question'
 import { Slug } from '../../enterprise/entities/value-objects/slug'
-import { InMemoryQuestionAttachmentRepository } from './../../../../../test/repositories/in-memory-question-attachments-repository'
+import { InMemoryQuestionAttachmentsRepository } from './../../../../../test/repositories/in-memory-question-attachments-repository'
 
 import { InMemoryQuestionsRepository } from 'test/repositories/in-memory-questions-repository'
 import { GetQuestionBySlugUseCase } from './get-question-by-slug-use-case'
 
 let inMemoryQuestionsRepository: InMemoryQuestionsRepository
-let inMemoryQuestionAttachmentRepository: InMemoryQuestionAttachmentRepository
+let inMemoryQuestionAttachmentRepository: InMemoryQuestionAttachmentsRepository
 let sut: GetQuestionBySlugUseCase
 
 describe('Get Question By Slug', () => {
   beforeEach(() => {
     inMemoryQuestionAttachmentRepository =
-      new InMemoryQuestionAttachmentRepository()
+      new InMemoryQuestionAttachmentsRepository()
     inMemoryQuestionsRepository = new InMemoryQuestionsRepository(
       inMemoryQuestionAttachmentRepository,
     )

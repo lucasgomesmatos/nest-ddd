@@ -2,18 +2,20 @@ import { ResourceNotFoundError } from '@/core/errors/erros/resource-not-found-er
 import { makeQuestion } from 'test/factories/make-question'
 import { InMemoryQuestionCommentsRepository } from 'test/repositories/in-memory-question-comments-repository'
 import { InMemoryQuestionsRepository } from 'test/repositories/in-memory-questions-repository'
-import { InMemoryQuestionAttachmentRepository } from './../../../../../test/repositories/in-memory-question-attachments-repository'
+import { InMemoryQuestionAttachmentsRepository } from './../../../../../test/repositories/in-memory-question-attachments-repository'
 import { CommentOnQuestionUseCase } from './comment-on-question-use-case'
 
 let inMemoryQuestionsRepository: InMemoryQuestionsRepository
 let inMemoryQuestionCommentsRepository: InMemoryQuestionCommentsRepository
-let inMemoryQuestionAttachmentRepository: InMemoryQuestionAttachmentRepository
+let inMemoryQuestionAttachmentsRepository: InMemoryQuestionAttachmentsRepository
 let sut: CommentOnQuestionUseCase
 
 describe('Create Question Comment', () => {
   beforeEach(() => {
+    inMemoryQuestionAttachmentsRepository =
+      new InMemoryQuestionAttachmentsRepository()
     inMemoryQuestionsRepository = new InMemoryQuestionsRepository(
-      inMemoryQuestionAttachmentRepository,
+      inMemoryQuestionAttachmentsRepository,
     )
     inMemoryQuestionCommentsRepository =
       new InMemoryQuestionCommentsRepository()

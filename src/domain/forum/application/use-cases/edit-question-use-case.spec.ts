@@ -4,20 +4,22 @@ import { InMemoryQuestionsRepository } from 'test/repositories/in-memory-questio
 import { UniqueEntityId } from '@/core//entities/unique-entityId'
 import { NotAllowedError } from '@/core/errors/erros/not-allowed-error'
 import { makeQuestionAttachment } from 'test/factories/make-question-attachment'
-import { InMemoryQuestionAttachmentRepository } from 'test/repositories/in-memory-question-attachments-repository'
+import { InMemoryQuestionAttachmentsRepository } from 'test/repositories/in-memory-question-attachments-repository'
 import { EditQuestionUseCase } from './edit-question-use-case'
 
 let inMemoryQuestionsRepository: InMemoryQuestionsRepository
-let inMemoryQuestionAttachmentsRepository: InMemoryQuestionAttachmentRepository
+let inMemoryQuestionAttachmentsRepository: InMemoryQuestionAttachmentsRepository
 let sut: EditQuestionUseCase
 
 describe('Edit Question', () => {
   beforeEach(() => {
+    inMemoryQuestionAttachmentsRepository =
+      new InMemoryQuestionAttachmentsRepository()
+
     inMemoryQuestionsRepository = new InMemoryQuestionsRepository(
       inMemoryQuestionAttachmentsRepository,
     )
-    inMemoryQuestionAttachmentsRepository =
-      new InMemoryQuestionAttachmentRepository()
+
     sut = new EditQuestionUseCase(
       inMemoryQuestionsRepository,
       inMemoryQuestionAttachmentsRepository,
@@ -106,7 +108,7 @@ describe('Edit Question', () => {
     expect(result.value).toBeInstanceOf(NotAllowedError)
   })
 
-  it('should sync new and removed attachment when editing a question', async () => {
+  it('should sync new and removed attachments when editing a question', async () => {
     const newQuestion = makeQuestion(
       {
         authorId: new UniqueEntityId('author-1'),
@@ -135,17 +137,17 @@ describe('Edit Question', () => {
       attachmentsIds: ['1', '3'],
     })
 
-    expect(result.isRight()).toBe(true)
+    expect(result.isRight()).toBeTruthy()
     expect(inMemoryQuestionAttachmentsRepository.items).toHaveLength(2)
-    expect(inMemoryQuestionAttachmentsRepository.items).toEqual(
-      expect.arrayContaining([
-        expect.objectContaining({
-          attachmentId: new UniqueEntityId('1'),
-        }),
-        expect.objectContaining({
-          attachmentId: new UniqueEntityId('3'),
-        }),
-      ]),
-    )
+    expect(inMemoryQuestionAttachmentsRepository.items).toEqual([
+      expect.objectContaining({
+        questionId: newQuestion.id,
+        attachmentId: new UniqueEntityId('1'),
+      }),
+      expect.objectContaining({
+        questionId: newQuestion.id,
+        attachmentId: new UniqueEntityId('3'),
+      }),
+    ])
   })
 })
