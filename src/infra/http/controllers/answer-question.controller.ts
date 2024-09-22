@@ -13,6 +13,7 @@ import { z } from 'zod'
 
 const answerQuestionBodySchema = z.object({
   content: z.string(),
+  attachment: z.array(z.string()),
 })
 
 type AnswerQuestionBodySchema = z.infer<typeof answerQuestionBodySchema>
@@ -29,14 +30,14 @@ export class AnswerQuestionsController {
     @CurrentUser() user: UserPayload,
     @Param('questionId') questionId: string,
   ) {
-    const { content } = body
+    const { content, attachment } = body
     const userId = user.sub
 
     const result = await this.answerQuestionUseCase.execute({
       questionId,
       content,
       authorId: userId,
-      attachmentsIds: [],
+      attachmentsIds: attachment,
     })
 
     if (result.isLeft()) {

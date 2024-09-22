@@ -4,6 +4,7 @@ import { INestApplication } from '@nestjs/common'
 import { JwtService } from '@nestjs/jwt'
 import { Test } from '@nestjs/testing'
 import request from 'supertest'
+import { AttachmentFactory } from 'test/factories/make-attachment'
 import { QuestionFactory } from 'test/factories/make-question'
 import { StudentFactory } from 'test/factories/make-student'
 import { AppModule } from '../../app.module'
@@ -12,18 +13,20 @@ describe('Create answer question Controller (E2E)', () => {
   let app: INestApplication
   let studentFactory: StudentFactory
   let questionFactory: QuestionFactory
+  let attachmentFactory: AttachmentFactory
   let prisma: PrismaService
   let jwt: JwtService
 
   beforeAll(async () => {
     const moduleRef = await Test.createTestingModule({
       imports: [AppModule, DatabaseModule],
-      providers: [StudentFactory, QuestionFactory],
+      providers: [StudentFactory, QuestionFactory, AttachmentFactory],
     }).compile()
 
     app = moduleRef.createNestApplication()
     studentFactory = moduleRef.get<StudentFactory>(StudentFactory)
     questionFactory = moduleRef.get<QuestionFactory>(QuestionFactory)
+    attachmentFactory = moduleRef.get<AttachmentFactory>(AttachmentFactory)
     prisma = moduleRef.get<PrismaService>(PrismaService)
     jwt = moduleRef.get<JwtService>(JwtService)
     await app.init()
@@ -38,6 +41,9 @@ describe('Create answer question Controller (E2E)', () => {
       authorId: user.id,
     })
 
+    const attachment1 = await attachmentFactory.makePrismaAttachment()
+    const attachment2 = await attachmentFactory.makePrismaAttachment()
+
     const questionId = question.id.toValue()
 
     const response = await request(app.getHttpServer())
@@ -45,6 +51,7 @@ describe('Create answer question Controller (E2E)', () => {
       .set('Authorization', `Bearer ${accessToken}`)
       .send({
         content: 'New Answer',
+        attachment: [attachment1.id.toString(), attachment2.id.toString()],
       })
 
     expect(response.status).toBe(201)
@@ -56,5 +63,13 @@ describe('Create answer question Controller (E2E)', () => {
       },
     })
     expect(answerOnDatabase).toBeTruthy()
+
+    const attachmentsOnDatabase = await prisma.attachment.findMany({
+      where: {
+        answerId: answerOnDatabase?.id,
+      },
+    })
+
+    expect(attachmentsOnDatabase).toHaveLength(2)
   })
 })
