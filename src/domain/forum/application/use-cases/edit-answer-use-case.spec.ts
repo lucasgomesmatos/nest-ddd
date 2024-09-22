@@ -93,4 +93,46 @@ describe('Edit Answer', () => {
     expect(result.isLeft()).toBeTruthy()
     expect(result.value).toBeInstanceOf(NotAllowedError)
   })
+
+  it('should sync new and removed attachments when editing a answer', async () => {
+    const expectedId = 'answer-id'
+    const expectedAuthorId = 'author-id'
+    const newAnswer = makeAnswer(
+      {
+        authorId: new UniqueEntityId(expectedAuthorId),
+      },
+      new UniqueEntityId(expectedId),
+    )
+
+    await inMemoryAnswersRepository.create(newAnswer)
+
+    inMemoryAnswerAttachmentRepository.items.push(
+      makeAnswerAttachment({
+        answerId: newAnswer.id,
+        attachmentId: new UniqueEntityId('1'),
+      }),
+      makeAnswerAttachment({
+        answerId: newAnswer.id,
+        attachmentId: new UniqueEntityId('2'),
+      }),
+    )
+
+    const result = await sut.execute({
+      answerId: expectedId,
+      authorId: expectedAuthorId,
+      content: 'new content',
+      attachmentsIds: ['1', '3'],
+    })
+
+    expect(result.isRight()).toBeTruthy()
+    expect(inMemoryAnswerAttachmentRepository.items).toHaveLength(2)
+    expect(inMemoryAnswerAttachmentRepository.items).toEqual([
+      expect.objectContaining({
+        attachmentId: new UniqueEntityId('1'),
+      }),
+      expect.objectContaining({
+        attachmentId: new UniqueEntityId('3'),
+      }),
+    ])
+  })
 })

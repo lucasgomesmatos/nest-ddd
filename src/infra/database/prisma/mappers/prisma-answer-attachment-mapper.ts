@@ -1,7 +1,7 @@
 import { UniqueEntityId } from '@/core/entities/unique-entityId'
 import { AnswerAttachment } from '@/domain/forum/enterprise/entities/answer-attachment'
 
-import { Attachment as PrismaAttachment } from '@prisma/client'
+import { Prisma, Attachment as PrismaAttachment } from '@prisma/client'
 
 export class PrismaAnswerAttachmentMapper {
   static toDomain(raw: PrismaAttachment) {
@@ -16,5 +16,24 @@ export class PrismaAnswerAttachmentMapper {
       },
       new UniqueEntityId(raw.id),
     )
+  }
+
+  static toPersistenceUpdateMany(
+    attachments: AnswerAttachment[],
+  ): Prisma.AttachmentUpdateManyArgs {
+    const attachmentIds = attachments.map((attachment) =>
+      attachment.attachmentId.toValue(),
+    )
+
+    return {
+      where: {
+        id: {
+          in: attachmentIds,
+        },
+      },
+      data: {
+        answerId: attachments[0].answerId.toString(),
+      },
+    }
   }
 }
