@@ -43,6 +43,7 @@ export class FetchQuestionAnswersController {
 
     const answers = result.value.answers
 
+    // TODO: implementar value objects para os parâmetros de saída
     return { answers: answers.map(AnswerPresenter.toHTTP) }
   }
 }
