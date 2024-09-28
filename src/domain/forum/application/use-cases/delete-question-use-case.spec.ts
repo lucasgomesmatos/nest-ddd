@@ -3,9 +3,14 @@ import { makeQuestion } from 'test/factories/make-question'
 import { UniqueEntityId } from '@/core//entities/unique-entityId'
 import { NotAllowedError } from '@/core/errors/erros/not-allowed-error'
 import { makeQuestionAttachment } from 'test/factories/make-question-attachment'
+import { InMemoryAttachmentsRepository } from 'test/repositories/in-memory-attachments-repository'
 import { InMemoryQuestionAttachmentsRepository } from 'test/repositories/in-memory-question-attachments-repository'
 import { InMemoryQuestionsRepository } from 'test/repositories/in-memory-questions-repository'
+import { InMemoryStudentsRepository } from 'test/repositories/in-memory-students-repository'
 import { DeleteQuestionUseCase } from './delete-question-use-case'
+
+let inMemoryStudentsRepository: InMemoryStudentsRepository
+let inMemoryAttachmentsRepository: InMemoryAttachmentsRepository
 
 let inMemoryQuestionsRepository: InMemoryQuestionsRepository
 let inMemoryQuestionAttachmentRepository: InMemoryQuestionAttachmentsRepository
@@ -13,10 +18,15 @@ let sut: DeleteQuestionUseCase
 
 describe('Delete Question', () => {
   beforeEach(() => {
+    inMemoryAttachmentsRepository = new InMemoryAttachmentsRepository()
+    inMemoryStudentsRepository = new InMemoryStudentsRepository()
+
     inMemoryQuestionAttachmentRepository =
       new InMemoryQuestionAttachmentsRepository()
     inMemoryQuestionsRepository = new InMemoryQuestionsRepository(
       inMemoryQuestionAttachmentRepository,
+      inMemoryStudentsRepository,
+      inMemoryAttachmentsRepository,
     )
 
     sut = new DeleteQuestionUseCase(inMemoryQuestionsRepository)

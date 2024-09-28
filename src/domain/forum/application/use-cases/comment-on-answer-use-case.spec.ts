@@ -2,8 +2,11 @@ import { NotAllowedError } from '@/core/errors/erros/not-allowed-error'
 import { makeAnswer } from 'test/factories/make-answer'
 import { InMemoryAnswerCommentsRepository } from 'test/repositories/in-memory-answer-comments-repository'
 import { InMemoryAnswersRepository } from 'test/repositories/in-memory-answers-repository'
+import { InMemoryStudentsRepository } from 'test/repositories/in-memory-students-repository'
 import { InMemoryAnswerAttachmentRepository } from './../../../../../test/repositories/in-memory-answer-attachments-repository'
 import { CommentOnAnswerUseCase } from './comment-on-answer-use-case'
+
+let inMemoryStudentsRepository: InMemoryStudentsRepository
 
 let inMemoryAnswersRepository: InMemoryAnswersRepository
 let inMemoryAnswerCommentsRepository: InMemoryAnswerCommentsRepository
@@ -17,7 +20,11 @@ describe('Create Answer Comment', () => {
     inMemoryAnswersRepository = new InMemoryAnswersRepository(
       inMemoryAnswerAttachmentRepository,
     )
-    inMemoryAnswerCommentsRepository = new InMemoryAnswerCommentsRepository()
+    inMemoryStudentsRepository = new InMemoryStudentsRepository()
+
+    inMemoryAnswerCommentsRepository = new InMemoryAnswerCommentsRepository(
+      inMemoryStudentsRepository,
+    )
     sut = new CommentOnAnswerUseCase(
       inMemoryAnswersRepository,
       inMemoryAnswerCommentsRepository,
