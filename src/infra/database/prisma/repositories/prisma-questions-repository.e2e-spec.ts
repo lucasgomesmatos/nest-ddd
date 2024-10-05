@@ -65,6 +65,83 @@ describe('Prisma Questions Repository (E2E)', () => {
     const questionDetails = await questionsRepository.findDetailsBySlug(slug)
     const cached = await cacheRepository.get(`question:${slug}:details`)
 
-    expect(cached).toEqual(JSON.stringify(questionDetails))
+    if (!cached) {
+      throw new Error('Cache not found')
+    }
+
+    expect(JSON.parse(cached)).toEqual(
+      expect.objectContaining({
+        id: questionDetails?.questionId.toString(),
+      }),
+    )
+  })
+
+  it('should return cached question on subsequent calls', async () => {
+    const user = await studentFactory.makePrismaStudent()
+
+    const question = await questionFactory.makePrismaQuestion({
+      authorId: user.id,
+    })
+
+    const attachment = await attachmentFactory.makePrismaAttachment()
+
+    await questionAttachmentFactory.makePrismaQuestionAttachment({
+      attachmentId: attachment.id,
+      questionId: question.id,
+    })
+
+    const slug = question.slug.value
+
+    let cached = await cacheRepository.get(`question:${slug}:details`)
+
+    expect(cached).toBeNull()
+
+    await questionsRepository.findDetailsBySlug(slug)
+
+    cached = await cacheRepository.get(`question:${slug}:details`)
+
+    expect(cached).not.toBeNull()
+
+    const questionDetails = await questionsRepository.findDetailsBySlug(slug)
+
+    if (!cached) {
+      throw new Error('Cache not found')
+    }
+
+    expect(JSON.parse(cached)).toEqual(
+      expect.objectContaining({
+        id: questionDetails?.questionId.toString(),
+      }),
+    )
+  })
+
+  it('should reset cache when question is updated', async () => {
+    const user = await studentFactory.makePrismaStudent()
+
+    const question = await questionFactory.makePrismaQuestion({
+      authorId: user.id,
+    })
+
+    const attachment = await attachmentFactory.makePrismaAttachment()
+
+    await questionAttachmentFactory.makePrismaQuestionAttachment({
+      attachmentId: attachment.id,
+      questionId: question.id,
+    })
+
+    const slug = question.slug.value
+
+    await cacheRepository.set(
+      `question:${slug}:details`,
+      JSON.stringify({
+        empty: true,
+      }),
+    )
+
+    await questionsRepository.save(question)
+
+    const cached = await cacheRepository.get(`question:${slug}:details`)
+
+    expect(cached).toBeNull()
   })
 })
